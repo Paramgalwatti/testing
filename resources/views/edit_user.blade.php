@@ -39,5 +39,52 @@
 
 @endsection
 @push('scripts')
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var editUserUrl;
 
+    $("#submit").on("click", function(e) {
+      e.preventDefault();
+      var userId = {{ $user->id }};
+      editUserUrl = 'edit_info/' + userId;
+      //console.log(editUserUrl);
+
+      var name = $('#name').val();
+      var email = $('#email').val();
+      var password = $('#password').val();
+      if (name === "" || email === "" || password === "") {
+        $("#error-message").html("All fields are required").slideDown();
+        $("#success-message").slideUp();
+        setTimeout(function() {
+          $('#error-message').slideUp();
+        }, 3000);
+      } else {
+        $.ajax({
+          url: editUserUrl,
+          type: 'POST',
+          data: {
+            name: name,
+            email: email,
+            password: password,
+            _token: '{{ csrf_token() }}'
+          },
+          success: function(data) {
+            //window.location.href = "{{ route('users') }}";
+            $("#success-message").html("Data inserted successfully").slideDown();
+            $("#error-message").slideUp();
+          },
+          error: function(error) {
+            console.log(error);
+            $("#error-message").html("Can't save record").slideDown();
+            $("#success-message").slideUp();
+            setTimeout(function() {
+              $('#error-message').slideUp();
+            }, 3000);
+          }
+        });
+      }
+    });
+  });
+</script> --}}
 @endpush

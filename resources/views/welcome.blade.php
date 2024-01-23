@@ -1,4 +1,16 @@
 @extends('layouts.app')
+<style>
+    #error-message{
+      background: #EFDCDD;
+      color: red;
+      padding: 10px;
+      margin:10px;
+      display: none;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+    </style>
 @section('content')
 <div class="container">
     <h1>Testing</h1>
@@ -10,6 +22,7 @@
             Session::forget('success');
         @endphp
     </div>
+    <div id="error-message" class="text-danger" ></div>
     @endif
     <table class="table table-bordered data-table">
         <thead>
@@ -56,14 +69,34 @@
     });
 
 </script>
+
 <script>
     $(document).ready(function() {
   
         $('.data-table').on('click', '.delete', function() {
             var userId = $(this).data('del');
+            // console.log(userId);
+            // var deleteUserUrl = 'delete_user/' + userId;
+            // window.location.href = deleteUserUrl;
+            var element = this;
             console.log(userId);
-            var deleteUserUrl = 'delete_user/' + userId;
-            window.location.href = deleteUserUrl;
+            console.log(element);
+            $.ajax({
+                url : "delete_user",
+                type : "POST",
+                data : {id : userId, _token: '{{ csrf_token() }}'},
+                success : function(data){
+                    if(data == 1){
+                        $(element).closest("tr").fadeOut();
+
+                    }
+                    else{
+                        $("#error-message").html("Can't Delete Record").slideDown();
+                        $("#success-message").slideUp;
+                    }
+                    //window.location.href = "{{ route('users') }}";
+                }
+            })
             
         });
     });

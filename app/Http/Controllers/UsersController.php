@@ -53,16 +53,19 @@ class UsersController extends Controller
     
         return redirect()->route('users')->with('success', 'User updated successfully.');
     }
-    public function delete_user($id){
-   
-        $user = User::find($id);
+    public function delete_user(Request $request)
+    {
+        $userId = $request->input('id');
+    
+       
+        $user = User::find($userId);
         if ($user) {
-            $user->forceDelete();
-            return redirect()->route('users')->with('success', 'User deleted successfully.');
+            $user->delete();
+            return response()->json(1); 
         } else {
-            return redirect()->route('users')->with('success', 'User not found.');
+            return response()->json(0);
         }
-}
+    }
 public function add_user()
 {
    
@@ -95,6 +98,6 @@ public function user_info(Request $request)
     $user->password = bcrypt($request->password);
     $user->save();
 
-    return redirect()->route('users')->with('success', 'User Added successfully.');
+    // return redirect()->route('users')->with('success', 'User Added successfully.');
 }
 }
